@@ -10,8 +10,6 @@ HEADERS = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36'
 }
 
-page = 1
-
 def get_html(url, pageNumber, params=''):
     correct_url = url + str(pageNumber)
     req = requests.get(correct_url, headers=HEADERS, params=params)
@@ -20,7 +18,7 @@ def get_html(url, pageNumber, params=''):
 
 def get_content(html):
     soup = BS(html, 'html.parser')
-    items = soup.find_all('div', class_='item article-summary')
+    items = soup.find_all('div', class_='item article-summary') # find all reviews on page
     games = []
     for item in items:
         games.append(
@@ -39,7 +37,7 @@ def save_results_to_csv(items, path):
         writer = csv.writer(file, delimiter=';')
         writer.writerow(['Review name', 'Review link', 'Reviewer internet portal', 'Image link'])
         for item in items:
-            writer.writerow([item['title'], item['review_link'], item['brand'], item['card_img']])
+            writer.writerow([item['title'], item['review_link'], item['brand'], item['card_img']]) # writing data to .csv
 
 
 def parser():
@@ -47,7 +45,7 @@ def parser():
     PAGENATION = input('Specify the quantity of pages to parse: ')
     PAGENATION = int(PAGENATION.strip())
     html = get_html(URL, 1)
-    if html.status_code == 200:
+    if html.status_code == 200: # check the connection and if successfully:
         print('The parsing process has started successfully...')
         for page in range(1, PAGENATION + 1):
             print(f'Page: {page}')
@@ -55,9 +53,9 @@ def parser():
             games.extend(get_content(html.text))
         print('Parsing has finished successfully!')
         #print(games)
-    else:
+    else: # or:
         print('Error! -> ' + URL)
-    save_results_to_csv(games, CSV)
+    save_results_to_csv(games, CSV) # saving results in .csv in the path of your project
     print('Your results successfully saved in ' + CSV)
 
 
