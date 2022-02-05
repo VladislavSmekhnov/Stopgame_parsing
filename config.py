@@ -1,4 +1,4 @@
-host = "127.0.0.1"
-user = "root"
-password = "14725"
-db_name = "test_py"
+host = "" # put in your host
+user = "" # put in your username
+password = "" # put in your password
+db_name = "" # put in your database name
